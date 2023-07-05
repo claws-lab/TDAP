@@ -10,7 +10,7 @@ Code for the work published at KDD 2023
     url={https://openreview.net/forum?id=Ox39VUFu-v}\
 }
 
-![](pipeline.png)
+![](figures/pipeline.png)
 &nbsp;
 
 ## Requirements

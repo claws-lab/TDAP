@@ -4,6 +4,9 @@ import scipy.sparse as sp
 import torch
 import torch.sparse 
 
+# Many functions adapted from Deeprobust library:
+# https://github.com/DSE-MSU/DeepRobust
+
 def clip_grad_norm (gradients, max_norm, norm_type=2.0):
     max_norm = float(max_norm)
     norm_type = float(norm_type)
@@ -109,6 +112,26 @@ def get_gpu_info (device):
     t, r, a, f = t // (1024 ** 2), r // (1024 ** 2), a // (1024 ** 2), f // (1024 ** 2)
     print ("Total: {}, Reserved: {}, Allocated: {}, Free: {}".format(t, r, a, f))
 
+
+def tensor2onehot(labels):
+    """Convert label tensor to label onehot tensor.
+
+    Parameters
+    ----------
+    labels : torch.LongTensor
+        node labels
+
+    Returns
+    -------
+    torch.LongTensor
+        onehot labels tensor
+
+    """
+
+    eye = torch.eye(labels.max() + 1)
+    onehot_mx = eye[labels]
+    return onehot_mx.to(labels.device)
+
 def is_directed(adj):
     directed = True
     for i in range(graph.shape[0]):
@@ -125,7 +148,6 @@ def is_directed(adj):
 
 def to_pyg_graphs(features, adjs, device, labels=None, num_ts=None, island=True):
     from torch_geometric.data import Data
-    from deeprobust.graph.utils import to_scipy
     from torch_geometric.utils import from_scipy_sparse_matrix
     pyg_graphs = []
     # adjs is a list of scipy sparse matrices...
@@ -225,11 +247,62 @@ def normalize_adj(mx):
     mx = mx.dot(r_mat_inv)
     return mx
 
+def is_sparse_tensor(tensor):
+    """Check if a tensor is sparse tensor.
+
+    Parameters
+    ----------
+    tensor : torch.Tensor
+        given tensor
+
+    Returns
+    -------
+    bool
+        whether a tensor is sparse tensor
+    """
+    # if hasattr(tensor, 'nnz'):
+    if tensor.layout == torch.sparse_coo:
+        return True
+    else:
+        return False
+
+def to_scipy(tensor):
+    """Convert a dense/sparse tensor to scipy matrix"""
+    if is_sparse_tensor(tensor):
+        values = tensor._values()
+        indices = tensor._indices()
+        return sp.csr_matrix((values.cpu().numpy(), indices.cpu().numpy()), shape=tensor.shape)
+    else:
+        indices = tensor.nonzero().t()
+        values = tensor[indices[0], indices[1]]
+        return sp.csr_matrix((values.cpu().numpy(), indices.cpu().numpy()), shape=tensor.shape)
+
+def normalize_adj_tensor(adj, sparse=False):
+    """Normalize adjacency tensor matrix.
+    """
+    device = adj.device
+    if sparse:
+        # warnings.warn('If you find the training process is too slow, you can uncomment line 207 in deeprobust/graph/utils.py. Note that you need to install torch_sparse')
+        # TODO if this is too slow, uncomment the following code,
+        # but you need to install torch_scatter
+        # return normalize_sparse_tensor(adj)
+        adj = to_scipy(adj)
+        mx = normalize_adj(adj)
+        return sparse_mx_to_torch_sparse_tensor(mx).to(device)
+    else:
+        mx = adj + torch.eye(adj.shape[0]).to(device)
+        rowsum = mx.sum(1)
+        r_inv = rowsum.pow(-1/2).flatten()
+        r_inv[torch.isinf(r_inv)] = 0.
+        r_mat_inv = torch.diag(r_inv)
+        mx = r_mat_inv @ mx
+        mx = mx @ r_mat_inv
+    return mx
+
 
 def normalize_adjs(adjs):
     """Normalize adjacency tensor matrix.
     """
-    from deeprobust.graph.utils import normalize_adj_tensor
     t_i, t_v = [], []
     for t in range(len(adjs)):
         norm_adj = normalize_adj_tensor(adjs[t], sparse=True)

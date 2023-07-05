@@ -25,9 +25,9 @@ epsilon1=100
 # 2 3 5 7 4, 6
 
 if [ "$constraint" == noise_feat ]; then
-    file=baseline_main_feat.py
+    file=baselines/baseline_main_feat.py
 else
-    file=baseline_main.py
+    file=baselines/baseline_main.py
 fi
 
 seed=123 #123 483, 665, 811

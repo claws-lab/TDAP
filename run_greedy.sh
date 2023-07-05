@@ -30,7 +30,7 @@ resparent_dir="baselines/greedy/results_${model_name,,}"
 if [ ! -d "${resparent_dir}/${dataset}/multi_targets/${constraint}" ]; then
     mkdir -p ${resparent_dir}/${dataset}/multi_targets/${constraint}
 fi
-file=greedy_main.py
+file=baselines/greedy_main.py
 echo $file
 
 seed=123 #123 483, 665, 811

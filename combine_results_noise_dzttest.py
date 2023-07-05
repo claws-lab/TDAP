@@ -42,7 +42,7 @@ elif method == 'pgd':
 else:
     dirs = ["baselines/{}/results_{}/{}/multi_targets/{}".format(method, model, dataset, constraint) for dataset in datasets for model in models]
 
-for res_dir in dirs: #, "results/{}/multi_targets/prbcd/noise".format(dataset)]:
+for res_dir in dirs: 
     ntg = 1
     if 'baselines' in res_dir:
         dataset = res_dir.split("/")[3]
@@ -55,7 +55,6 @@ for res_dir in dirs: #, "results/{}/multi_targets/prbcd/noise".format(dataset)]:
     except:
         continue
     for filename in files:
-        # method = "prbcd" if ("prbcd" in res_dir) else "pgd"
         try:
             chars = filename[:-4].split("_")
             if online:
@@ -149,10 +148,7 @@ for res_dir in dirs: #, "results/{}/multi_targets/prbcd/noise".format(dataset)]:
                             perb_line = f.readline()[:-1]
                         while True:
                             try:
-                                if (method == "prbcd"):
-                                    perb_times = eval(perb_line)[0]
-                                else:
-                                    perb_times, perb_targets, perb_nodes, perb_direcs = eval(re.sub("device='cuda:[0-9]'", "device='cpu'", perb_line))
+                                perb_times, perb_targets, perb_nodes, perb_direcs = eval(re.sub("device='cuda:[0-9]'", "device='cpu'", perb_line))
                                 break
                             except:
                                 line = f.readline()[:-1]
