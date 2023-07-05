@@ -23,7 +23,7 @@ Follow the steps in the given links to install these libraries for your system c
 
 A full set of requirements is given in `requirements.txt`, which can be used to create a conda virtual environment as:
 
-> `conda create --name <env> --file requirements.txt`
+> conda create --name <env> --file requirements.txt
 
 ## Data
 We use these 4 datasets in this work:
@@ -35,7 +35,7 @@ We use these 4 datasets in this work:
 
 To create a discrete-time dynamic graph with a given number of snapshots, use the following command inside `./data/`:
 
-> `python get_data.py --dataset <dataset_name> --num_graphs <num_snapshots>`,
+> python get_data.py --dataset <dataset_name> --num_graphs <num_snapshots>,
 
 where `dataset_name` is the name of the directory inside which the dataset is stored in the data folder. We provide the pre-processed graphs for the 4 datasets inside `./data/`. 
 
@@ -46,7 +46,7 @@ We support training of 3 victim dynamic graph models - DySAT, EvolveGCN (both Ev
 
 DySAT is not provided by the torch_geometric_temporal library, so we use the available pytorch implementation. In order to train it, clone their repository inside `models/` directory as:
 
-> `git clone https://github.com/FeiGSSS/DySAT_pytorch`
+> git clone https://github.com/FeiGSSS/DySAT_pytorch
 
 The description of the given arguments is given inside `args.py`. These arguments can be modified in order to train for different settings. In particular, one can change the field of `dataset` and `model_name` to train a specific dataset and model. Other parameters such as `nepochs`, `learning_rate`, and `neg_weight` can be tuned accordingly to train the model in a given setting. Note that the argument `-dyn_feats` must be passed when the dataset has dynamic features (like in DBLP), otherwise it must not be passed. 
 
@@ -57,7 +57,7 @@ The description of the given arguments is given inside `args.py`. These argument
 1. Open `run_greedy.sh` and edit the fields according to the desired attack setting. 
 2. Specify the `model_name`, `dataset`, `task` for attacking. Also, don't forget to pass `dyn_feats` if the dataset has dynamic features.
 3. Change the `epsilons_arr` to include the epsilon values that are to be tested on. 
-4. > Run `./run_greedy.sh`. 
+4. Run `./run_greedy.sh`. 
 
 
 ### Degree
@@ -66,7 +66,7 @@ The description of the given arguments is given inside `args.py`. These argument
 2. Change the `method` field to `degree`. 
 3. Specify the `model_name`, `dataset`, `task` for attacking. Also, don't forget to pass `dyn_feats` if the dataset has dynamic features.
 4. Change the `epsilons_arr` to include the epsilon values that are to be tested on. 
-5. > Run `./run_baselines.sh`. 
+5. Run `./run_baselines.sh`. 
 
 
 ### Random
@@ -76,7 +76,7 @@ The description of the given arguments is given inside `args.py`. These argument
 3. Specify the `model_name`, `dataset`, `task` for attacking. Also, don't forget to pass `dyn_feats` if the dataset has dynamic features.
 4. Change the `epsilons_arr` to include the epsilon values that are to be tested on. 
 5. In case of feature perturbation, pass `constraint` as `noise_feat` instead of `noise`.
-6. > Run `./run_baselines.sh`. 
+6. Run `./run_baselines.sh`. 
 
 
 ## TD-PGD
@@ -87,7 +87,7 @@ The description of the given arguments is given inside `args.py`. These argument
 3. Change the `epsilons_arr` to include the epsilon values that are to be tested on. 
 4. In case of feature perturbation, set `constraint` as `noise_feat` instead of `noise`. 
 5. In case of an **online attack**, set `online` as `True`. 
-6. > Run `./run_pgd.sh`. 
+6. Run `./run_tdpgd.sh`. 
 
 ### Anomaly Detection
 **Netwalk**: Run `run_attk_anomaly.sh` for the required attack settings and find t-test between the scores stored in the pickle files using scikit-learn functions.
@@ -100,7 +100,7 @@ The description of the given arguments is given inside `args.py`. These argument
 2. Choose the `method` from one of the following - `pgd`, `greedy`, `degree`, and `random`. 
 3. Select constraint as `noise` for structural and `noise_feat` for feature perturbations.
 4. Make `online` to be `True` for online attacks. 
-5. > Run `python combine_results_noise.py 
+5. Run `python combine_results_noise.py`.
 
 This will store the results inside the folder `av_results/`. 
 

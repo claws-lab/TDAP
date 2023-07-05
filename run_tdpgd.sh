@@ -26,10 +26,8 @@ if $online; then
     file=src/main_online.py
 elif [ "$constraint" == noise_feat ]; then
     file=src/main_feat.py
-elif [ "$nprocs" == 1 ]; then
-    file=src/main.py
 else
-    file=main_parallel.py
+    file=src/main.py
 fi
 
 declare -a epsilons_arr=(0.02 0.06 0.1 0.3 0.5 0.7 0.9) 
