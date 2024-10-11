@@ -132,15 +132,15 @@ def tensor2onehot(labels):
     onehot_mx = eye[labels]
     return onehot_mx.to(labels.device)
 
-def is_directed(adj):
-    directed = True
-    for i in range(graph.shape[0]):
-        for j in range(graph.shape[1]):
-            directed &= graph[i, j] == graph[j, i]
-            if graph[i, j] != graph[j, i]:
-                print('i: ', i)
-                print('j: ', j)
-    print("Directed: ", directed)
+# def is_directed(adj):
+#     directed = True
+#     for i in range(graph.shape[0]):
+#         for j in range(graph.shape[1]):
+#             directed &= graph[i, j] == graph[j, i]
+#             if graph[i, j] != graph[j, i]:
+#                 print('i: ', i)
+#                 print('j: ', j)
+#     print("Directed: ", directed)
 
 # adj_matrices is a list of sparse matrices
 # adjs is a tensor of nT, nnodes, nnodes
@@ -441,11 +441,11 @@ def create_data_splits(prev_adjs, next_adj, val_mask_fraction=0.2, test_mask_fra
         #rows_close = np.all(np.round(a - b[:, None], tol) == 0, axis=-1)
         #return np.any(rows_close)
     
-    def ismember_all(a, b):
-        print(type(a))
-        print(type(b))
-        rows_close = np.all(np.round(a - b[:, None], tol) == 0, axis=-1)
-        return np.any(rows_close)
+    # def ismember_all(a, b):
+    #     print(type(a))
+    #     print(type(b))
+    #     rows_close = np.all(np.round(a - b[:, None], tol) == 0, axis=-1)
+    #     return np.any(rows_close)
 
     def tup_to_list(arr):
         return []
