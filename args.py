@@ -3,6 +3,7 @@ import pickle
 import numpy as np
 
 parser = argparse.ArgumentParser(description='Argparser for WBA on dynamic graphs')
+parser.add_argument('-file', type=str, default='src/main.py', help='')
 parser.add_argument('-constraint', type=str, default='budget', help='')
 parser.add_argument('-saved_model', type=str, default=None, help='saved model directory')
 parser.add_argument('-model_name', type=str, default=None, help='Architecture model name if not default')

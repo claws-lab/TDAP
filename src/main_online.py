@@ -19,7 +19,6 @@ from models.wrap_models import AttackModel
 from src.online_pgd_attack import TDPGD
 from dataset import Dataset
 
-from args import cmd_args
 from utils import * #normalize_adjs, sparse_mx_to_torch_sparse_tensor, get_gpu_info
 from sklearn.metrics import roc_auc_score, roc_curve, top_k_accuracy_score
 import sys
@@ -29,7 +28,7 @@ import time
 import os
 from copy import deepcopy
 
-def get_attack_model (num_feats, num_nodes, saved_model, train_edges=None, train_labels=None, neg_sampling=True): #, embs=False):
+def get_attack_model (cmd_args, num_feats, num_nodes, saved_model, train_edges=None, train_labels=None, neg_sampling=True): #, embs=False):
     with open('{}/model_{}_{}_{}.pkl'.format(saved_model, cmd_args.num_graphs, cmd_args.context, cmd_args.target_ts), 'rb') as f:
         base_args = pickle.load(f)
     
@@ -49,11 +48,11 @@ def get_attack_model (num_feats, num_nodes, saved_model, train_edges=None, train
     return AttackModel(base_args) #if (not (embs)) else AttackEmbModel(base_args)
     # return DynGraphVictim(**base_args).to(device)
 
-def load_base_model(num_feats, num_nodes, train_edges=None, train_labels=None):
+def load_base_model(cmd_args, num_feats, num_nodes, train_edges=None, train_labels=None):
     assert cmd_args.saved_model is not None
     print (cmd_args.saved_model)
 
-    base_model = get_attack_model (num_feats, num_nodes, cmd_args.saved_model, train_edges=train_edges, 
+    base_model = get_attack_model (cmd_args, num_feats, num_nodes, cmd_args.saved_model, train_edges=train_edges, 
                                     train_labels=train_labels, neg_sampling=cmd_args.neg_sampling)
     if torch.cuda.is_available() and ('cuda' in cmd_args.device):
         map_location=lambda storage, loc: storage.cuda(int(cmd_args.device.split("cuda:")[1]))
@@ -75,7 +74,7 @@ def load_base_model(num_feats, num_nodes, train_edges=None, train_labels=None):
     base_model.eval()
     return base_model.to(torch.double).to(cmd_args.device)
 
-if __name__ == '__main__':
+def main(cmd_args):
     print(cmd_args)
     # Set random seed
     seed = cmd_args.seed
@@ -131,7 +130,7 @@ if __name__ == '__main__':
     # y_targets = np.concatenate((np.ones(len(pos_links)), np.zeros(len(pos_links))))
 
     # Load model
-    victim_model = load_base_model(num_feats=data.graphs[0].x.shape[1], num_nodes=data.max_nodes, 
+    victim_model = load_base_model(cmd_args, num_feats=data.graphs[0].x.shape[1], num_nodes=data.max_nodes, 
                                     train_edges=data.train_mask, train_labels=data.train_y)
     print (victim_model.device)
     orig_embs = (victim_model(context_graphs, idx_targets=idx_targets) if (cmd_args.large_graph) else victim_model(context_graphs)).detach()

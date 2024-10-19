@@ -1,0 +1,41 @@
+Namespace(analyze_only=False, bp_tgspec=False, budget=0, budget_perc=None, constraint='noise', context=19, dataset='reddit_hyperlinks', debug=False, device='cuda:5', dropout=0.5, dyn_feats=False, epsilon=0.02, epsilon1=100, featureless=True, file='src/main.py', iga_steps=10, inits='ones', k_anom=2, khop=2, lambda1=0.0, large_graph=False, loss_type='CE', lr_init=10.0, method='pgd', model_name='DySAT', neg_sampling=True, nosa=False, nota=False, nprocs=1, ntargets=1, num_graphs=20, num_samples=50, num_steps=50, online=False, pll_devices=['cuda:0', 'cuda:2', 'cuda:3', 'cuda:5'], sampling='None', save_only=False, save_perbs_file=None, saved_model='models/DySAT/reddit_hyperlinks', seed=123, seq_order='rd', seq_tg_attk=False, target_ts=19, task='link_prediction', tga_attack_mode=None, tga_disturbance_ratio=0.0, tga_iter_ub=100000, tga_thresh_prob=0.0, thresh_wt=0.0, undirected=False, use_optim=True, victims=None)
+Loaded 20 graphs 
+Loaded 35776 X matrices 
+data/reddit_hyperlinks/link_prediction/eval_19_20_0_0.npz
+Loaded eval data
+torch.Size([35776, 10])
+35776
+[35776, 35776, 35776, 35776, 35776, 35776, 35776, 35776, 35776, 35776, 35776, 35776, 35776, 35776, 35776, 35776, 35776, 35776, 35776]
+8548 10 2
+models/DySAT/reddit_hyperlinks
+cuda:5
+torch.Size([19, 35776, 32])
+(8548,) (8548, 1)
+[[9.98829539e-01]
+ [9.99040282e-01]
+ [9.57217017e-01]
+ ...
+ [2.14868529e-03]
+ [5.92076540e-03]
+ [2.89255489e-07]]
+Orig AUCROC: 0.9468598586878381
+tensor([16., 12., 11.,  9., 10., 11., 22., 22., 26., 26., 22., 28., 22., 36.,
+        29., 24., 28., 25.]) tensor([0.1800, 0.3200, 0.2400, 0.2200, 0.1800, 0.2000, 0.2200, 0.4400, 0.4400,
+        0.5200, 0.5200, 0.4400, 0.5600, 0.4400, 0.7200, 0.5800, 0.4800, 0.5600,
+        0.5000])
+34.292962074279785
+cuda:5 cuda:5
+Target_id: 0, Perturbations: (tensor([], device='cuda:5', dtype=torch.int64), tensor([], device='cuda:5', dtype=torch.int64), tensor([], device='cuda:5', dtype=torch.int64), tensor([], device='cuda:5', dtype=torch.int64))
+dz': 185.466021322119, dz'/dz: 1.0, K: 1.0, E: 0.0, dz'-dz: 8.881784197001252e-16
+tensor([482., 467., 430., 430., 429., 448., 460., 461., 489., 458., 450., 428.,
+        355., 381., 417., 405., 364., 334.]) tensor([6.6800, 9.6400, 9.3400, 8.6000, 8.6000, 8.5800, 8.9600, 9.2000, 9.2200,
+        9.7800, 9.1600, 9.0000, 8.5600, 7.1000, 7.6200, 8.3400, 8.1000, 7.2800,
+        6.6800])
+68.9925320148468
+cuda:5 cuda:5
+Target_id: 1, Perturbation size: 152
+dz': 459.56653197741093, dz'/dz: 0.9999996880465228, K: 0.9987303323260149, E: 1.7571397617599516e-05, dz'-dz: 0.0028298295795270434
+tensor([24., 27., 45., 58., 58., 69., 84., 71., 77., 88., 61., 72., 80., 94.,
+        87., 77., 61., 68.]) tensor([0.4800, 0.4800, 0.5400, 0.9000, 1.1600, 1.1600, 1.3800, 1.6800, 1.4200,
+        1.5400, 1.7600, 1.2200, 1.4400, 1.6000, 1.8800, 1.7400, 1.5400, 1.2200,
+        1.3600])

@@ -9,6 +9,7 @@ context=19 #12 #13
 target_ts=19 #12 #13
 ntargets=1
 nsamples=50 #100
+budget=0
 
 method=pgd
 constraint=noise
@@ -17,7 +18,6 @@ num_steps=50
 lambda1=0
 khop=2
 nprocs=1
-
 lr_init=10
 
 online=false
@@ -44,7 +44,8 @@ seed=123 #123 483, 665, 811
 
 for epsilon in "${epsilons_arr[@]}"
 do
-    python3 $file \
+    python3 run.py \
+        -file ${file} \
         -constraint ${constraint} \
         -budget ${budget} \
         -epsilon ${epsilon} \

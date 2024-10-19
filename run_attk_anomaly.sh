@@ -44,7 +44,8 @@ seed=123 #123 483, 665, 811
 # for budget in "${budgets_arr[@]}"
 for epsilon in "${epsilons_arr[@]}"
 do
-    python3 anomaly/main_anomaly.py \
+    python3 run.py \
+        -file anomaly/main_anomaly.py \
         -constraint ${constraint} \
         -budget ${budget} \
         -epsilon ${epsilon} \

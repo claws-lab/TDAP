@@ -37,7 +37,8 @@ seed=123 #123 483, 665, 811
 
 for epsilon in "${epsilons_arr[@]}"
 do
-    python3 $file \
+    python3 run.py \
+        -file $file \
         -constraint ${constraint} \
         -budget ${budget} \
         -epsilon ${epsilon} \

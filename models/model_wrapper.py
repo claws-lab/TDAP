@@ -76,7 +76,8 @@ class DynGraphVictim(torch.nn.Module):
                 from models.DySAT_pytorch.models.model import DySAT
             args = DotDict({'structural_head_config': dys_struc_head, 'structural_layer_config': dys_struc_layer, 
                             'temporal_head_config': dys_temp_head, 'temporal_layer_config': dys_temp_layer, 
-                            'spatial_drop': dys_spa_drop, 'temporal_drop': dys_temp_drop, 'window': -1, 'residual': dys_residual})
+                            'spatial_drop': dys_spa_drop, 'temporal_drop': dys_temp_drop, 'window': -1, 'residual': dys_residual,
+                            'struc_attn': True, 'temp_attn': True})
             self.encoder = DySAT (args=args, num_features=nfeats, time_length=num_graphs, task=task, debugging=debugging)
             out_size = args.temporal_layer_config[-1]
         elif (model_name == 'DDNE'):

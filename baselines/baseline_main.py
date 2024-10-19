@@ -16,7 +16,6 @@ from torch_sparse.tensor import cpu
 
 from models.wrap_models import AttackModel
 
-from args import cmd_args
 from utils import * #normalize_adjs, sparse_mx_to_torch_sparse_tensor, get_gpu_info
 from sklearn.metrics import accuracy_score, confusion_matrix, roc_auc_score, roc_curve, top_k_accuracy_score
 import sys
@@ -31,7 +30,7 @@ from baselines.degree.deg_attack import DegAttack
 from dataset import Dataset
 from tqdm import tqdm
 
-def get_attack_model (num_feats, num_nodes, nclasses, saved_model, model_task, train_edges=None, train_labels=None, neg_sampling=True): #, embs=False):
+def get_attack_model (cmd_args, num_feats, num_nodes, nclasses, saved_model, model_task, train_edges=None, train_labels=None, neg_sampling=True): #, embs=False):
     with open('{}/{}_{}_{}_{}.pkl'.format(saved_model, model_task, cmd_args.num_graphs, cmd_args.context, cmd_args.target_ts), 'rb') as f:
         base_args = pickle.load(f)
     
@@ -52,13 +51,13 @@ def get_attack_model (num_feats, num_nodes, nclasses, saved_model, model_task, t
     return AttackModel(base_args) #if (not (embs)) else AttackEmbModel(base_args)
     # return DynGraphVictim(**base_args).to(device)
 
-def load_base_model(num_feats, num_nodes, nclasses=None, train_edges=None, train_labels=None):
+def load_base_model(cmd_args, num_feats, num_nodes, nclasses=None, train_edges=None, train_labels=None):
     assert cmd_args.saved_model is not None
     print (cmd_args.saved_model)
 
     model_task = "modelnc" if cmd_args.task == 'node_classification' else 'model'
 
-    base_model = get_attack_model (num_feats, num_nodes, nclasses, cmd_args.saved_model, model_task, train_edges=train_edges, 
+    base_model = get_attack_model (cmd_args, num_feats, num_nodes, nclasses, cmd_args.saved_model, model_task, train_edges=train_edges, 
                                     train_labels=train_labels, neg_sampling=cmd_args.neg_sampling)
     if torch.cuda.is_available() and ('cuda' in cmd_args.device):
         map_location=lambda storage, loc: storage.cuda(int(cmd_args.device.split("cuda:")[1]))
@@ -80,7 +79,7 @@ def load_base_model(num_feats, num_nodes, nclasses=None, train_edges=None, train
     base_model.eval()
     return base_model.to(torch.double).to(cmd_args.device)
 
-if __name__ == '__main__':
+def main(cmd_args):
     print(cmd_args)
     print(cmd_args, file=sys.stderr)
     # Set random seed
@@ -134,7 +133,7 @@ if __name__ == '__main__':
 
     # Load model
     if not cmd_args.save_only:
-        victim_model = load_base_model(num_feats=data.graphs[0].x.shape[1], num_nodes=data.max_nodes, 
+        victim_model = load_base_model(cmd_args, num_feats=data.graphs[0].x.shape[1], num_nodes=data.max_nodes, 
                                     nclasses=nclasses, train_edges=data.train_mask, train_labels=data.train_y)
         print (victim_model.device)
         orig_embs = (victim_model(context_graphs, idx_targets=idx_targets) if (cmd_args.large_graph) else victim_model(context_graphs)).detach()

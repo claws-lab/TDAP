@@ -1,0 +1,10 @@
+Namespace(analyze_only=False, bp_tgspec=False, budget=0, budget_perc=None, constraint='noise', context=19, dataset='reddit_hyperlinks', debug=False, device='cuda:5', dropout=0.5, dyn_feats=False, epsilon=0.06, epsilon1=100, featureless=True, file='src/main.py', iga_steps=10, inits='ones', k_anom=2, khop=2, lambda1=0.0, large_graph=False, loss_type='CE', lr_init=10.0, method='pgd', model_name='DySAT', neg_sampling=True, nosa=False, nota=False, nprocs=1, ntargets=1, num_graphs=20, num_samples=50, num_steps=50, online=False, pll_devices=['cuda:0', 'cuda:2', 'cuda:3', 'cuda:5'], sampling='None', save_only=False, save_perbs_file=None, saved_model='models/DySAT/reddit_hyperlinks', seed=123, seq_order='rd', seq_tg_attk=False, target_ts=19, task='link_prediction', tga_attack_mode=None, tga_disturbance_ratio=0.0, tga_iter_ub=100000, tga_thresh_prob=0.0, thresh_wt=0.0, undirected=False, use_optim=True, victims=None)
+Loaded 20 graphs 
+Loaded 35776 X matrices 
+data/reddit_hyperlinks/link_prediction/eval_19_20_0_0.npz
+Loaded eval data
+torch.Size([35776, 10])
+35776
+[35776, 35776, 35776, 35776, 35776, 35776, 35776, 35776, 35776, 35776, 35776, 35776, 35776, 35776, 35776, 35776, 35776, 35776, 35776]
+8548 10 2
+models/DySAT/reddit_hyperlinks

@@ -43,7 +43,8 @@ if [ ! -d "${results_dir}/${dataset}/${constraint}" ]; then
 fi
 for epsilon in "${epsilons_arr[@]}"
 do
-    python3 $file \
+    python3 run.py \
+        -file $file \
         -method ${method} \
         -model_name ${model_name} \
         -constraint ${constraint} \
